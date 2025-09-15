@@ -1,0 +1,201 @@
+# Sistema de Inventario — Tienda de Ropa (Java)
+
+**Repositorio:** [https://github.com/JhonSebastianZarate/TiendaRopaInventario](https://github.com/JhonSebastianZarate/TiendaRopaInventario)
+
+Este proyecto implementa una aplicación simple de gestión de inventarios para una tienda de ropa, usando **patrones creacionales** vistos en clase.
+
+La meta es cumplir los requisitos del enunciado y la rúbrica:  
+- Calidad de código  
+- Correcta aplicación de patrones  
+- Documentación clara  
+- Presentación y colaboración  
+
+---
+
+## Tabla de Contenido
+1. [Objetivo y alcance](#1-objetivo-y-alcance)  
+2. [Requisitos del curso y cómo se cumplen](#2-requisitos-del-curso-y-c%C3%B3mo-se-cumplen)  
+3. [Patrones creacionales implementados](#3-patrones-creacionales-implementados-resumen)  
+4. [Arquitectura y estructura de paquetes](#4-arquitectura-y-estructura-de-paquetes)  
+5. [Cómo ejecutar](#5-c%C3%B3mo-ejecutar)  
+6. [Guion de pruebas](#6-guion-de-pruebas-salidas-esperadas)  
+7. [Estrategia de pruebas](#7-estrategia-de-pruebas-unitarias-e-integracion)  
+8. [Roadmap corto](#8-roadmap-corto)  
+9. [Datos del grupo](#9-datos-del-grupo)  
+
+---
+
+## 1) Objetivo y alcance
+**Objetivo:** Crear una aplicación en Java que permita crear categorías y productos de ropa, y gestionar inventario (sumar/restar unidades), aplicando **patrones creacionales**.
+
+**Alcance funcional (solo lo pedido):**
+- Crear productos dentro de categorías (ej: Camisa, Pantalón) usando patrones.  
+- Clonar productos para agilizar altas.  
+- Consultar estado del inventario y actualizar stock (entrada/salida).  
+- No se implementan funciones fuera del enunciado.  
+
+---
+
+## 2) Requisitos del curso y cómo se cumplen
+- **Categorías y productos:** Abstract Factory + Factory Method + Builder  
+- **Clonación de productos:** Prototype  
+- **Gestión de inventario:** Singleton  
+- **Repositorio GitHub:** contiene README, código fuente, commits de ambos integrantes y `.gitignore`  
+- **Documentación técnica:** secciones 3 a 7  
+- **Pruebas:** guion en la sección 6 y estrategia en la 7  
+- **Automatización:** archivo `.bat` con menú interactivo  
+
+**Conteo de clases según enunciado:**  
+| Patrón | Clases mínimas |
+|--------|----------------|
+| Abstract Factory | 5 |
+| Builder | 4 |
+| Factory Method | 3 |
+| Prototype | 3 |
+| Singleton | 1 |
+
+---
+
+## 3) Patrones creacionales implementados (resumen)
+
+### Factory Method
+- **Problema:** crear diferentes prendas sin acoplar el código cliente a las clases concretas.  
+- **Solución:** Creator abstracto y Creadores concretos para cada prenda.  
+- **Ubicación:** `src/com/tiendaderopa/factorymethod/`  
+
+### Prototype
+- **Problema:** alta de productos similares de forma rápida.  
+- **Solución:** cada producto implementa Prototype y se clona desde un objeto base.  
+- **Ubicación:** `src/com/tiendaderopa/prototype/`  
+
+### Singleton
+- **Problema:** tener un único inventario consistente en toda la app.  
+- **Solución:** clase `Inventario` con `getInstance()` y constructor privado.  
+- **Ubicación:** `src/com/tiendaderopa/singleton/`  
+
+### Builder
+- **Problema:** construir productos con muchos atributos paso a paso, de forma legible.  
+- **Solución:** `Producto` con Builder interno y `Director` con combinaciones frecuentes.  
+- **Ubicación:** `src/com/tiendaderopa/builder/`  
+
+### Abstract Factory
+- **Problema:** crear familias de productos relacionados (ej: línea deportiva y formal) sin acoplar clases concretas.  
+- **Solución:** `RopaFactory` (abstracta), `RopaDeportivaFactory` y `RopaFormalFactory`.  
+- **Ubicación:** `src/com/tiendaderopa/abstractfactory/`  
+
+---
+
+## 4) Arquitectura y estructura de paquetes
+src/
+└─ com/tiendaderopa/
+├─ app/
+│ └─ Main.java
+├─ factorymethod/
+├─ prototype/
+├─ singleton/
+├─ builder/
+└─ abstractfactory/
+bin/ (generado al compilar)
+run_proyecto.bat (menu con opciones por patrón; recompila automático)
+
+markdown
+Copiar código
+- **Main de aplicación:** `com.tiendaderopa.app.Main` imprime un mensaje de inicio.  
+- Cada patrón tiene un cliente propio para probarlo en consola.  
+
+---
+
+## 5) Cómo ejecutar
+**Requisitos:**  
+- Java JDK 17 o superior  
+- Windows 10/11  
+- VS Code opcional  
+
+### Opción A: menú `.bat` (recomendado)
+1. Abrir terminal en la carpeta raíz del proyecto.  
+2. Ejecutar:
+.\run_proyecto.bat
+
+markdown
+Copiar código
+3. Elegir una opción:
+1 Main
+2 Factory Method
+3 Prototype
+4 Singleton
+5 Builder
+6 Abstract Factory
+
+swift
+Copiar código
+
+### Opción B: comandos manuales
+- **Compilar todo:**
+```bash
+javac -d bin src/com/tiendaderopa/app/*.java src/com/tiendaderopa/factorymethod/*.java src/com/tiendaderopa/prototype/*.java src/com/tiendaderopa/singleton/*.java src/com/tiendaderopa/builder/*.java src/com/tiendaderopa/abstractfactory/*.java
+Ejecutar un cliente:
+
+bash
+Copiar código
+java -cp bin com.tiendaderopa.factorymethod.Client
+6) Guion de pruebas (salidas esperadas)
+Factory Method
+bash
+Copiar código
+Producto: Camisa de algodon - Precio: $25.0
+Producto: Pantalon de mezclilla - Precio: $40.0
+Prototype
+bash
+Copiar código
+Original: Camisa deportiva - Precio: $30.0
+Clonada: Camisa deportiva - Precio: $30.0
+Original: Pantalon clasico - Precio: $50.0
+Clonada: Pantalon clasico - Precio: $50.0
+Singleton
+diff
+Copiar código
+=== Inventario Actual ===
+- Camisa deportiva
+- Pantalon clasico
+Es el mismo inventario? true
+Builder
+less
+Copiar código
+Producto creado con Director: Camisa basica [...]
+Producto creado con Director: Pantalon premium [...]
+Producto creado manualmente: Zapato deportivo [...]
+Abstract Factory
+makefile
+Copiar código
+Deportiva: Camisa deportiva de secado rapido
+Deportiva: Pantalon deportivo elastico
+Formal: Camisa formal blanca
+Formal: Pantalon formal negro
+7) Estrategia de pruebas unitarias e integración
+Unitarias: cada patrón tiene un cliente que valida su lógica.
+
+Integración: el .bat recompila y ejecuta varios clientes en la misma build.
+
+8) Roadmap corto
+Validar stock (no negativo)
+
+Log en archivo plano de movimientos
+
+Mantener el alcance dentro del enunciado (sin UI ni BD)
+
+9) Datos del grupo
+Curso / Unidad: Patrones de diseño — Unidad 1
+
+Grupo: 11
+
+Integrantes:
+
+Usuario GitHub: JhonSebastianZarate
+
+Usuario GitHub: DahyunG16
+
+Docente: Luis Eduard Baquero Rey
+
+Repositorio: https://github.com/JhonSebastianZarate/TiendaRopaInventario
+
+Archivo de ejecución: .\run_proyecto.bat
