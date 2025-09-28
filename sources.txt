@@ -1,0 +1,8 @@
+=== Fuentes consultadas para la Entrega 2 ===
+
+- Gamma, E. et al. (1994). "Design Patterns: Elements of Reusable Object-Oriented Software".
+- Material de clase: Universidad Piloto de Colombia, curso "Patrones de Diseño de Software".
+- Documentación oficial de Java: https://docs.oracle.com/javase/8/docs/api/
+- Ejemplos y tutoriales prácticos de patrones en Java (GeeksforGeeks, Refactoring Guru).
+
+Nota: Todas las fuentes fueron adaptadas y aplicadas al caso de estudio (tienda de ropa).
