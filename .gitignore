@@ -1,23 +1,20 @@
-# Ignorar archivos compilados de Java
+# Ignorar compilados de Java
+bin/
 *.class
 
-# Ignorar directorios de compilación
-/bin/
-/out/
-/target/
+# Archivos de sistema
+.DS_Store
+Thumbs.db
 
-# Archivos de configuración de IDEs
+# Logs y temporales
+*.log
+*.tmp
+*.bak
+
+# Archivos de entorno y configuración
 .vscode/
 .idea/
 *.iml
 
-# Archivos del sistema
-.DS_Store
-Thumbs.db
-
-# Archivos temporales
-*.log
-*.tmp
-
-# Copias de seguridad
-*~
+# Archivos generados por ejecución
+*.out
