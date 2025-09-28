@@ -1,0 +1,21 @@
+@startuml
+title Secuencia - Clonado de producto (Prototype)
+
+actor Cliente as Client
+participant ProductCore as ProductoOriginal
+participant ProductCore as Clon
+participant CategoryNode as Categoria
+participant ProductLeaf as Hoja
+
+Client -> ProductoOriginal : clone()
+activate ProductoOriginal
+ProductoOriginal --> Clon : copia de campos/atributos
+deactivate ProductoOriginal
+
+Client -> Clon : setName("Camisa básica (clon)")
+Client -> Clon : putAttr("talla","M")
+
+Client -> Hoja : new ProductLeaf(Clon)
+Client -> Categoria : add(Hoja)
+
+@enduml

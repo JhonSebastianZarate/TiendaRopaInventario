@@ -1,0 +1,23 @@
+@startuml
+title Secuencia - Ajuste de stock (venta/reposición)
+
+actor Cliente as Client
+participant InventoryInvoker as Invoker
+participant RemoveStockCommand as Cmd
+participant ProductCore as Producto
+participant LowStockObserver as Alerta
+
+== Venta: se aplica comando ==
+Client -> Invoker : apply(Cmd)
+Invoker -> Cmd : execute()
+
+Cmd -> Producto : setStock(nuevo)
+Producto -> Alerta : onStockChanged(p, old, new) \n[solo si baja del umbral]
+
+== Deshacer última ==
+Client -> Invoker : undo()
+Invoker -> Cmd : undo()
+Cmd -> Producto : setStock(valorAnterior)
+Producto -> Alerta : onStockChanged(p, old, new) \n[si corresponde]
+
+@enduml

@@ -1,0 +1,109 @@
+@startuml
+title Diagrama de clases - Tienda de Ropa
+
+' ---- Paquetes para ordenar visualmente ----
+package "core" {
+  class ProductCore {
+    - id : String
+    - name : String
+    - price : double
+    - stock : int
+    - attributes : Map<String,Object>
+    - observers : List<InventoryObserver>
+    + ProductCore(name: String, price: double, stock: int)
+    + addObserver(o: InventoryObserver) : void
+    + removeObserver(o: InventoryObserver) : void
+    + setStock(newStock: int) : void
+    + putAttr(key: String, value: Object) : void
+    + getAttr(key: String) : Object
+    + clone() : ProductCore
+  }
+}
+
+package "observer" {
+  interface InventoryObserver {
+    + onStockChanged(p: ProductCore, oldV: int, newV: int) : void
+  }
+
+  class LowStockObserver {
+    - threshold : int
+    + LowStockObserver(threshold: int)
+    + onStockChanged(p: ProductCore, oldV: int, newV: int) : void
+  }
+  InventoryObserver <|.. LowStockObserver
+}
+
+package "composite" {
+  abstract class InventoryComponent {
+    + getName() : String
+    + getStock() : int
+    + getChildren() : List<InventoryComponent>
+    + add(c: InventoryComponent) : void
+    + remove(c: InventoryComponent) : void
+  }
+
+  class CategoryNode {
+    - name : String
+    - description : String
+    - attributesSchema : List<String>
+    - children : List<InventoryComponent>
+    + CategoryNode(name: String)
+    + CategoryNode(name: String, description: String, schema: List<String>)
+    + add(c: InventoryComponent) : void
+    + remove(c: InventoryComponent) : void
+    + getName() : String
+    + getStock() : int
+    + getChildren() : List<InventoryComponent>
+  }
+
+  class ProductLeaf {
+    - product : ProductCore
+    + ProductLeaf(product: ProductCore)
+    + getName() : String
+    + getStock() : int
+    + getChildren() : List<InventoryComponent>
+  }
+
+  InventoryComponent <|-- CategoryNode
+  InventoryComponent <|-- ProductLeaf
+  ProductLeaf --> ProductCore : contiene
+}
+
+package "command" {
+  interface InventoryCommand {
+    + execute() : void
+    + undo() : void
+  }
+
+  class AddStockCommand {
+    - product : ProductCore
+    - qty : int
+    + AddStockCommand(product: ProductCore, qty: int)
+    + execute() : void
+    + undo() : void
+  }
+
+  class RemoveStockCommand {
+    - product : ProductCore
+    - qty : int
+    + RemoveStockCommand(product: ProductCore, qty: int)
+    + execute() : void
+    + undo() : void
+  }
+
+  class InventoryInvoker {
+    - history : Deque<InventoryCommand>
+    + apply(c: InventoryCommand) : void
+    + undo() : void
+  }
+
+  InventoryCommand <|.. AddStockCommand
+  InventoryCommand <|.. RemoveStockCommand
+  InventoryInvoker --> InventoryCommand : usa
+}
+
+' ---- Relaciones Observer ----
+ProductCore --> InventoryObserver : notifica cambios
+
+@enduml
+
